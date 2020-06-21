@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>title</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+<!--
+
+
+처음 짠 calendar 
+변수명 쓸데없는걸 전역변수로 많이 선언했었고
+중복이 많았음
+
+6월의 달력이라 치면 6월의 달력은 구해왔지만
+6월 14 ~17일까지면 구해오지못했음 조건 잘못걸었던 문제가있었음
+  -->
+
+
+<style>
+*{
+margin:0px;
+padding:0px;
+}
+.sec{
+
+float:left;
+width:50%;
+height:50%;
+}
+#calendar tr td
+{
+width:50px;
+height:50px;
+border:1px solid black;
+margin:auto 0px;
+}
+
+</style>
+
+<script type="text/javascript">
+
+$(document).ready(function()
+      {
+   
+   
+  
+   
+   //input[type="date"] 왼쪽의 값 담기위한 변수
+   var left_calendar;
+   var left_calendar_split;
+   var left_year;
+   var left_month;
+   var left_day;
+   var left_Toltal_day;
+   var left_week
+   //input[type="date"] 오른쪽의 값 담기위한 변수
+   var right_calendar;
+   var right_calendar_split;
+   var right_year;
+   var right_month;
+   var right_day;
+   var right_week;
+   
+   //캘린더 누른 위치
+   var calendar_row
+   var calendar_column
+   
+  /*  $("#calendar").children().children().eq(1).text("test");
+   alert( $("#calendar").children().children().val()); */
+   $("#left_calendar").on("change",function()
+         {
+      //왼쪽 날짜 선택 값 입력
+      left_calendar=$("#left_calendar").val();  //날짜
+      left_calendar_split=left_calendar.split('-'); //split
+      left_year= left_calendar_split[0]; //year
+      left_month= left_calendar_split[1]; //month
+      left_day= left_calendar_split[2]; //day
+      left_Toltal_day=new Date(left_year,left_month,0).getDate() //월의 일수
+      left_week=new Date(left_year,left_month-1,1).getDay() // 월의 첫날 요일
+      
+      })
+      
+        $("#right_calendar").on("change",function()
+         {
+      //오른쪽 날짜 선택 값 입력
+     right_calendar=$("#right_calendar").val();
+     right_calendar_split=left_calendar.split('-');
+     right_year= left_calendar_split[0];
+     right_month= left_calendar_split[1];
+     right_day= left_calendar_split[2];
+     right_Toltal_day=new Date(right_year,right_month,0).getDate()
+       right_week=new Date(right_year,right_month-1,1).getDay()
+         })
+         
+         //조회나 이전이나 prev버튼 만들었을떄
+     
+         var calendar =document.getElementById("calendar");
+        $("#search").on("click",function(){
+           
+           //값을 배열에 넣어놓고 가져오는데
+           // 선택한날짜보다 작으면 비활성화 입력이나 입력 x 하면될듯
+           
+           
+           
+           left_week// 어디부터시작을할꺼냐
+           left_Toltal_day //총찍을 횟수
+           var chk=1;
+           var chks=1;
+           var chkss=15;
+           //6월이라치면 
+             alert(typeof Number(left_day))
+           
+           
+           
+           var data =new Array();
+           
+           
+           //calendar.rows[1].cells[left_week].innerText=chk;
+            for(var i =1;  i<7;  i++)
+          {
+          
+          for(var j=0; j < 7; j++)
+             {
+             if(i==1 && j < left_week) // 처음시작하는위치
+                {
+
+                }
+             else if(left_Toltal_day < chk   ) // 총날짜보다 커질때
+                {
+                
+                }
+             else //값들어갈부분
+                {
+                calendar.rows[i].cells[j].innerText=chk++;
+                }
+          
+             
+             }
+          
+          }//end for 
+           
+          
+           
+           
+           //$('#calendar').eq(0).rows(0).cells(2).innerHTML="test" 
+           
+        }); //end search
+        
+        
+        
+      /*     //테이블의의 열구하기
+         $('#calendar').find('tr td').click( function(){
+            calendar_column=$(this).index()
+            });
+         //테이블의 행구하기
+         $('#calendar').find('tr').click( function(){
+            calendar_row=$(this).index()
+            });
+          */
+         
+         //배열 놨두고 하기
+         
+         
+         
+      })//end ready
+      
+</script>
+</head>
+<body>
+<header>
+<div>
+<span>Business Level</span><input type="text"/>
+<span>Screen ID</span><input type="text"/>
+<span>UI Pattern</span><input type="text"/>
+<span>Designed Date</span><input type="text"/>
+</div>
+<div>
+<span>Designer</span><input type="text"/>
+<span>Screen Name</span><input type="text"/>
+<span>Confirmed Date</span><input type="text"/>
+</div>
+</header>
+
+<section id="sec_bottom">
+<div id="section_left" class="sec">
+<div>
+<span>기간</span>
+<input type="date" min="1900-01-01" max="3000-12-31" id="left_calendar"> 
+~
+<input type="date"  min="1900-01-01" max="3000-12-31" id="right_calendar"> 
+<input type="button" value=" 조회" id="search"/>
+</div>
+
+<div id="calendar_wrap">
+<div> <h1>2020년 May</h1></div>
+<div>
+<table id="calendar">
+<tr><td>Sun</td><td>Mon</td><td> Tue</td><td>Wed </td><td>Thu </td><td>Fri</td><td>Sat</td></tr>
+<tr><td></td><td></td><td> </td><td> </td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td> </td><td> </td><td> </td><td></td><td></td></tr>
+<tr><td></td><td></td><td> </td><td> </td><td> </td><td></td><td></td></tr>
+<tr><td></td><td></td><td> </td><td> </td><td> </td><td></td><td></td></tr>
+<tr><td></td><td></td><td> </td><td> </td><td> </td><td></td><td></td></tr>
+</table>
+</div>
+<div>왼쪽버튼 오른쪽버튼</div>
+<div>pre next</div>
+</div>
+
+<div>선택된 일자<span>(요일)      년    월     일</span></div>
+<div><input type="button" value=" 적용"/></div>
+</div>
+<div id="section_right" class="sec">
+<table>
+<tr>
+<td>
+일자
+</td>
+<td>
+요일
+<td>
+국경일
+</td>
+
+</tr></table>
+</div>
+
+
+</section>
+
+</body>
+</html>

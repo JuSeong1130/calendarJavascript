@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>title</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+<!--  
+
+변수 중복이나 전역변수 많은거 제거 
+
+6월 14일~17일까지는 해결됬으나 
+다중 if 많은것이 문제
+
+-->
+
+
+<style>
+*{
+margin:0px;
+padding:0px;
+}
+.sec{
+
+float:left;
+width:50%;
+height:50%;
+}
+#calendar tr td
+{
+width:50px;
+height:50px;
+border:1px solid black;
+margin:auto 0px;
+}
+
+.Btn{
+   width: 100px;
+   height: 28px;
+}
+
+</style>
+
+<script type="text/javascript">
+   //input[type="date"] 왼쪽의 값 담기위한 변수
+   var start_year;
+   var start_month;
+   var start_day;
+
+   //input[type="date"] 오른쪽의 값 담기위한 변수
+   var end_year;
+   var end_month;
+   var end_day;
+   
+   var current_month
+   var current_year
+
+   var SelctedCellNum;
+   var SelctedCell1;
+   var SelctedCell2;
+
+   
+   
+   
+   var drawCalender = function(y,m,d1,d2){   //d1 startday //d2 endday
+      var totDay = new Date(y, m, 0).getDate() //월의 총일수 30일인지 31일인지
+      var firstDay = new Date(y, m - 1, 1).getDay() // 월의 첫날 요일
+      var chk = 1;
+
+      if (d1 == 0) d1 = 1; //0으로들어오면 1일부터 그림
+      if (d2 == 0) d2 = totDay; //0으로들어오면  그달의 일수까지 그림
+
+      
+      //
+      for (var i = 1; i < 6; i++) {
+         for (var j = 0; j < 7; j++) {
+            if (i == 1 && j < firstDay) {
+               calendar.rows[i].cells[j].innerText = '';
+            }
+            else if (totDay < chk) {
+               calendar.rows[i].cells[j].innerText = '';
+            }
+              
+            else {
+            	
+               if (chk < d1) {
+                  chk++
+                  calendar.rows[i].cells[j].innerText = '';
+               }
+               else {
+                  if (chk <= d2)
+                     calendar.rows[i].cells[j].innerText = chk++;
+                  else {
+                     calendar.rows[i].cells[j].innerText = '';
+                  }
+               }
+               
+               //조건을 걸고들어와서 거기안에서 또 확인 왜이렇게한지? 안에다가한 이유? 당연한건가 어떤점에서 이렇게 한건지
+            		   //스타트 데이트보다 작으면 값은 늘려줘야되니까 값늘리고 빈칸 
+            		   //엔드데이트랑 같아질때까지만 출력
+               
+               
+               
+               
+            }
+         }
+      } //endfor
+   }//end drawCalender
+
+   
+$(document).ready(function()
+{
+    //1. 년도 비교하고 월 비교해서 다르면 전부 출력 그리고 +되는건 밑에서
+   $('#btnNxt').on('click',function(){
+      if(current_month < end_month){
+
+         if(e)
+            drawCalender(current_year,end_month,0,end_day);
+         else
+            drawCalender(current_year,end_month,0,0);
+
+      }else {
+         console.log('끝')
+         return;
+      } 
+
+      
+      
+      
+      if(current_month==12){
+         current_month =1;
+         current_year++;
+      }else{
+         current_month++;
+      }
+   })//end btnNxt
+   
+   
+   
+
+   $('#btnPre').on('click', function () {
+      if (current_month == 1) {
+         current_month = 12;
+         current_year--;
+      } else {
+         current_month--;
+      }
+   })
+
+
+   //조회나 이전이나 prev버튼 만들었을떄
+
+   $("#search").on("click", function () {
+      //왼쪽 날짜 선택 값 입력
+      var start_date = $("#left_calendar").val().split('-');  //날짜
+      start_year =  start_date[0]; //year
+      start_month =  start_date[1]; //month
+      start_day =  start_date[2]; //day
+
+      //오른쪽 날짜 선택 값 입력
+      var end_date  = $("#right_calendar").val().split('-');
+      end_year = end_date[0];
+      end_month = end_date[1];
+      end_day = end_date[2];
+
+      //값을 배열에 넣어놓고 가져오는데
+      // 선택한날짜보다 작으면 비활성화 입력이나 입력 x 하면될듯
+      current_month = start_month * 1
+      current_year = start_year * 1
+
+      
+      
+      
+      if(start_year == end_year && start_month == end_month)
+         drawCalender(current_year,current_month,start_day,end_day);
+      else
+         drawCalender(current_year,current_month,start_day,0);
+
+
+   }); //end search
+   
+      })//end ready
+      
+</script>
+</head>
+<body>
+<header>
+<div>
+<span>Business Level</span><input type="text"/>
+<span>Screen ID</span><input type="text"/>
+<span>UI Pattern</span><input type="text"/>
+<span>Designed Date</span><input type="text"/>
+</div>
+<div>
+<span>Designer</span><input type="text"/>
+<span>Screen Name</span><input type="text"/>
+<span>Confirmed Date</span><input type="text"/>
+</div>
+</header>
+
+<section id="sec_bottom">
+<div id="section_left" class="sec">
+<div>
+<span>기간</span>
+<input type="date" min="1900-01-01" max="3000-12-31" id="left_calendar"> 
+~
+<input type="date"  min="1900-01-01" max="3000-12-31" id="right_calendar"> 
+<input type="button" value=" 조회" id="search"/>
+</div>
+
+<div id="calendar_wrap">
+<div> <h1>2020년 May</h1></div>
+<div>
+<table id="calendar">
+<tr><td>Sun</td><td>Mon</td><td> Tue</td><td>Wed </td><td>Thu </td><td>Fri</td><td>Sat</td></tr>
+<tr><td></td><td></td><td> </td><td> </td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td> </td><td> </td><td> </td><td></td><td></td></tr>
+<tr><td></td><td></td><td> </td><td> </td><td> </td><td></td><td></td></tr>
+<tr><td></td><td></td><td> </td><td> </td><td> </td><td></td><td></td></tr>
+<tr><td></td><td></td><td> </td><td> </td><td> </td><td></td><td></td></tr>
+</table>
+</div>
+<div>
+<button id='btnPre' class='Btn'>pre</button>
+<button  id='btnNxt'class='Btn'>nex</button>
+
+</div>
+</div>
+
+<div>선택된 일자<span>(요일)      년    월     일</span></div>
+<div><input type="button" value=" 적용"/></div>
+</div>
+<div id="section_right" class="sec">
+<table>
+<tr>
+<td>
+일자
+</td>
+<td>
+요일
+<td>
+국경일
+</td>
+
+</tr></table>
+</div>
+
+
+</section>
+
+</body>
+</html>
