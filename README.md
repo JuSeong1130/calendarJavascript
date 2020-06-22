@@ -14,3 +14,4 @@ const valueFunc = () => {<br>
 } 적용 필요<br>
 3.javascript promise then<br>
 4.샌드박스패턴<br>
+5.스크롤시 머리고정되기위한 thead tbody
